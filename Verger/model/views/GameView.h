@@ -4,10 +4,13 @@
 
 class GameView : public Console::View
 {
-public:
-	GameView(Game* game);
+private:
+	Game* _game;
 
-	void Update(Console::Controller* controller, Console::Screen& screen) override;
-	void OnKeyPressed(Console::Controller* controller, char key) override;
+public:
+	explicit GameView(Game* game);
+
+	void Update(Console::Screen& screen) override;
+	void OnKeyPressed(char key) override;
 };
 
