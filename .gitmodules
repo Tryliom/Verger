@@ -1,0 +1,3 @@
+[submodule "Verger/libs/ConsoleViewController"]
+	path = Verger/libs/ConsoleViewController
+	url = https://github.com/Tryliom/ConsoleViewController
