@@ -18,3 +18,6 @@ Every tree go by different steps:
 
 The farmer need to choose when he harvest all his tree, he can choose only 1 month in the year and need to have at lease 2000 kg of fruits.
 
+# Install
+
+Clone this repo with command `git clone https://github.com/Tryliom/Verger --recursive`
