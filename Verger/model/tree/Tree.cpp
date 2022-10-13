@@ -75,11 +75,16 @@ void Tree::OnMonth(const Month currentMonth)
 	}
 }
 
-int Tree::Harvest()
+int Tree::Harvest(const Month currentMonth)
 {
-	const int fruits = _currentNbFruit;
-	_currentNbFruit = 0;
-	_currentNbMaxFruit = 0;
+	int fruits = 0;
+
+	if (currentMonth >= _startHarvestDate && currentMonth <= _endHarvestDate)
+	{
+		fruits = _currentNbFruit;
+		_currentNbFruit = 0;
+		_currentNbMaxFruit = 0;
+	}
 
 	return fruits * _fruitWeight;
 }

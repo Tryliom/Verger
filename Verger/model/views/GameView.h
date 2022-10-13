@@ -7,6 +7,7 @@ class GameView : public Console::View
 private:
 	Game* _game;
 
+	void setupComponents();
 public:
 	explicit GameView(Game* game);
 

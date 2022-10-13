@@ -32,7 +32,7 @@ public:
 	 * \brief Harvest the tree and return his total weight
 	 * \return The weight of the fruits harvested
 	 */
-	int Harvest();
+	int Harvest(Month currentMonth);
 };
 
 class CherryTree final : public Tree

@@ -12,18 +12,14 @@ Game::Game()
 
 void Game::NextMonth()
 {
-	if (_currentMonth == Month::DECEMBER)
-	{
-		nextYear();
-	}
-	else
+	if (_currentMonth != Month::END)
 	{
 		_currentMonth = static_cast<Month>(static_cast<int>(_currentMonth) + 1);
-	}
 
-	for (auto& tree : _trees)
-	{
-		tree.OnMonth(_currentMonth);
+		for (auto& tree : _trees)
+		{
+			tree.OnMonth(_currentMonth);
+		}
 	}
 }
 
@@ -43,7 +39,10 @@ int Game::GetPotentialWeight() const
 	int weight = 0;
 	for (const auto& tree : _trees)
 	{
-		weight += tree.GetCurrentWeight();
+		if (tree.CanBeHarvested(_currentMonth))
+		{
+			weight += tree.GetCurrentWeight();
+		}
 	}
 
 	return weight;
@@ -51,13 +50,18 @@ int Game::GetPotentialWeight() const
 
 void Game::Harvest()
 {
-	for (auto& tree : _trees)
+	if (CanHarvest())
 	{
-		_totalWeight += tree.Harvest();
+		for (auto& tree : _trees)
+		{
+			_totalWeight += tree.Harvest(_currentMonth);
+		}
+
+		_harvestLeft--;
 	}
 }
 
-void Game::nextYear()
+void Game::NextYear()
 {
 	_totalWeight = 0;
 	_currentMonth = Month::JANUARY;
