@@ -1,6 +1,5 @@
 #include "Tree.h"
-
-#include <random>
+#include "../../libs/ConsoleViewController/ConsoleViewController.h"
 
 Tree::Tree(
 	const std::string& name, const Month growthDate, const Month harvestDate, 
@@ -16,29 +15,18 @@ Tree::Tree(
 	_currentNbFruit = 0;
 }
 
-
-int GetRandomNumber(const int min, const int max) {
-	std::random_device osSeed;
-	uint_least32_t seed = osSeed();
-
-	std::mt19937 generator(seed);
-	std::uniform_int_distribution<uint_least32_t> distribute(min, max);
-
-	return static_cast<int>(distribute(generator));
-}
-
 void Tree::OnMonth(const Month currentMonth)
 {
 	if (currentMonth == Month::APRIL)
 	{
-		if (GetRandomNumber(0, 100) < 5)
+		if (Random::GetInt(0, 100) < 5)
 		{
 			_currentNbFruit = 0;
 			_currentNbMaxFruit = 0;
 		}
 		else
 		{
-			_currentNbFruit = GetRandomNumber(_minNbFruit, _maxNbFruit);
+			_currentNbFruit = Random::GetInt(_minNbFruit, _maxNbFruit);
 			_currentNbMaxFruit = _currentNbFruit;
 		}
 	}
@@ -49,7 +37,7 @@ void Tree::OnMonth(const Month currentMonth)
 		if (currentMonth >= Month::APRIL && currentMonth <= _endHarvestDate)
 		{
 			// Lost 3 to 10% of fruits per month
-			_currentNbFruit -= GetRandomNumber(_currentNbFruit * 3 / 100, _currentNbFruit * 10 / 100);
+			_currentNbFruit -= Random::GetInt(_currentNbFruit * 3 / 100, _currentNbFruit * 10 / 100);
 			_currentNbMaxFruit = _currentNbFruit;
 		}
 		// The fruit begin to rotten, losing a portion of fruits each months
