@@ -4,16 +4,7 @@ GameView::GameView(Game* game)
 {
 	_game = game;
 
-	setupComponents();
-}
-
-void GameView::setupComponents()
-{
-	clearComponents();
-
-	if (_game->GetCurrentMonth() != Month::END)
-	{
-		setComponents({
+	setComponents({
 		new Console::BasicButton(
 			"Harvest", PositionX(0.25f), PositionY(0.5f),
 			[this]()
@@ -28,63 +19,52 @@ void GameView::setupComponents()
 			{
 				_game->NextMonth();
 
-				if (_game->GetCurrentMonth() == Month::END)
+				if (_game->GetCurrentMonth() == Month::DECEMBER)
 				{
-					setupComponents();
+					//TODO: Show result of the year on another view
+
 				}
 			},
 			true, true
 		)
-			});
-	}
-	else
-	{
-
-	}
+	});
 }
 
 void GameView::Update(Console::Screen& screen)
 {
 	View::Update(screen);
 
-	if (_game->GetCurrentMonth() != Month::END)
-	{
-		screen.Draw(Console::Text{ 
-			.Str = "Month: " + MONTH_TO_STRING.at(_game->GetCurrentMonth()),
-			.X = 2,
-			.Y = 2
-		});
+	screen.Draw(Console::Text{ 
+		.Str = "Month: " + MONTH_TO_STRING.at(_game->GetCurrentMonth()),
+		.X = 2,
+		.Y = 2
+	});
 
-		screen.Draw(Console::Text{
-			.Str = "Fruits: " + std::to_string(_game->GetNbFruit()),
-			.X = 2,
-			.Y = 4
-		});
+	screen.Draw(Console::Text{
+		.Str = "Fruits: " + _game->GetNbFruit(),
+		.X = 2,
+		.Y = 4
+	});
 
-		screen.Draw(Console::Text{
-			.Str = "How many gram you can get if you harvest now: " + std::to_string(_game->GetPotentialWeight()) + "g",
-			.X = 2,
-			.Y = 6
-		});
+	screen.Draw(Console::Text{
+		.Str = "Harvest potential weight: " + _game->GetPotentialWeightFormatted(),
+		.X = 2,
+		.Y = 6
+	});
 
-		screen.Draw(Console::Text{
-			.Str = "Harvested weight: " + std::to_string(_game->GetCurrentWeight()) + "/" + std::to_string(_game->GetGoalWeight()) + "g",
-			.X = 2,
-			.Y = 8,
-			.Foreground = _game->HasSurpassGoal() ? Console::Foreground::RED : Console::Foreground::GREEN
-		});
+	screen.Draw(Console::Text{
+		.Str = "Harvested weight: " + _game->GetCompletion(),
+		.X = 2,
+		.Y = 8,
+		.Background = _game->HasSurpassGoal() ? Console::Background::GREEN : Console::Background::RED,
+		.Foreground = Console::Foreground::WHITE,
+	});
 
-		screen.Draw(Console::Text{
-			.Str = "Harvest left: " + std::to_string(_game->GetHarvestLeft()),
-			.X = 2,
-			.Y = 10
-		});
-	}
-	else
-	{
-		// Display result of the year
-
-	}
+	screen.Draw(Console::Text{
+		.Str = "Harvest left: " + std::to_string(_game->GetHarvestLeft()),
+		.X = 2,
+		.Y = 10
+	});
 }
 
 void GameView::OnKeyPressed(const char key)

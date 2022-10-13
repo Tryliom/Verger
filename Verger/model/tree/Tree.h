@@ -17,11 +17,13 @@ private:
 	int _currentNbMaxFruit;
 	int _currentNbFruit;
 public:
-	Tree(const std::string& name, Month growthDate, Month harvestDate, int fruitWeight, int minNbFruit, int maxNbFruit);
+	Tree(const std::string& name, Month startHarvestDate, Month endHarvestDate, int fruitWeight, int minNbFruit, int maxNbFruit);
 
 	[[nodiscard]] int GetNbFruit() const { return _currentNbFruit; }
 	[[nodiscard]] int GetCurrentWeight() const { return _currentNbFruit * _fruitWeight; }
-	[[nodiscard]] bool CanBeHarvested(const Month currentMonth) const { return _currentNbFruit > 0 && currentMonth >= _startHarvestDate && currentMonth <= Month::DECEMBER; }
+	[[nodiscard]] std::string GetName() const { return _name; }
+
+	[[nodiscard]] bool CanBeHarvested(const Month currentMonth) const;
 
 	/**
 	 * \brief Called every month
@@ -41,14 +43,14 @@ public:
 	CherryTree() : Tree("Cherry tree", Month::MAY, Month::JUNE, 5, 45000, 60000) {}
 };
 
+class PearTree final : public Tree
+{
+public:
+	PearTree() : Tree("Pear tree", Month::OCTOBER, Month::NOVEMBER, 90, 1600, 2500) {}
+};
+
 class AppleTree final : public Tree
 {
 public:
 	AppleTree() : Tree("Apple tree", Month::SEPTEMBER, Month::NOVEMBER, 150, 600, 850) {}
-};
-
-class PeerTree final : public Tree
-{
-public:
-	PeerTree() : Tree("Peer tree", Month::OCTOBER, Month::NOVEMBER, 90, 1600, 2500) {}
 };
