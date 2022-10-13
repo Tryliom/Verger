@@ -1,4 +1,7 @@
 #include "Game.h"
+
+#include <format>
+
 #include "../views/OrchardView.h"
 #include "../tree/TreeFactory.h"
 
@@ -13,16 +16,6 @@ Game::Game()
 	SetView(new OrchardView(this));
 }
 
-
-float roundOff(const float value, const int precision)
-{
-	const int multiplier = pow(10, precision);
-
-	const int rounded = static_cast<int>(value * multiplier);
-
-	return std::round(static_cast<float>(rounded) / multiplier);
-}
-
 std::string Game::formatNumber(const int number, NumberType type) const
 {
 	std::string unit;
@@ -35,7 +28,7 @@ std::string Game::formatNumber(const int number, NumberType type) const
 
 	if (number >= 1000000)
 	{
-		numberToDisplay /= 1000000.0f;
+		numberToDisplay /= 1000000;
 
 		if (type == NumberType::WEIGHT)
 		{
@@ -48,7 +41,7 @@ std::string Game::formatNumber(const int number, NumberType type) const
 	}
 	else if (number >= 1000)
 	{
-		numberToDisplay /= 1000.0f;
+		numberToDisplay /= 1000;
 
 		if (type == NumberType::WEIGHT)
 		{
@@ -59,8 +52,12 @@ std::string Game::formatNumber(const int number, NumberType type) const
 			unit = "k";
 		}
 	}
+	else
+	{
+		return std::to_string(number);
+	}
 
-	return std::to_string(roundOff(numberToDisplay, 2)) + unit;
+	return std::format("{:.2f}", numberToDisplay) + unit;
 }
 
 std::unordered_map<std::string, int> Game::GetTrees() const
