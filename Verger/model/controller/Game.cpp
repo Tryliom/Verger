@@ -163,6 +163,16 @@ void Game::BuyTree(const Tree& tree, const int price)
 	}
 }
 
+void Game::BuyHarvest(const int price)
+{
+	if (_money >= price)
+	{
+		_money -= price;
+
+		_maxHarvest++;
+	}
+}
+
 void Game::NextYear()
 {
 	_money += getMoneyIncome();

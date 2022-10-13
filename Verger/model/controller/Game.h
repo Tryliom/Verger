@@ -40,6 +40,7 @@ public:
 	[[nodiscard]] int GetGoalWeight() const { return _goalWeight; }
 	[[nodiscard]] bool CanHarvest() const { return _harvestLeft > 0; }
 	[[nodiscard]] int GetHarvestLeft() const { return _harvestLeft; }
+	[[nodiscard]] int GetMaxHarvest() const { return _maxHarvest; }
 	[[nodiscard]] bool IsGoalReached() const { return _totalWeight >= _goalWeight; }
 	[[nodiscard]] int GetYear() const { return _currentYear; }
 
@@ -54,6 +55,7 @@ public:
 
 	void BuyRandomTree(int price);
 	void BuyTree(const Tree& tree, int price);
+	void BuyHarvest(int price);
 
 	[[nodiscard]] bool HasSurpassGoal() const { return _totalWeight >= _goalWeight; }
 };

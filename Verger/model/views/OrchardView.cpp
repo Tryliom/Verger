@@ -1,6 +1,7 @@
 #include "OrchardView.h"
 
 #include "GameView.h"
+#include "SpecialShopView.h"
 
 OrchardView::OrchardView(Game* game) : View()
 {
@@ -8,12 +9,12 @@ OrchardView::OrchardView(Game* game) : View()
 
 	setComponents({
 		new Console::BasicButton(
-			"Buy a random tree [10$]", PositionX(0.25f), PositionY(10),
+			"Buy a random tree [15$]", PositionX(0.25f), PositionY(10),
 			[this]()
 			{
-				if (_game->HasEnoughMoney(10))
+				if (_game->HasEnoughMoney(15))
 				{
-					_game->BuyRandomTree(10);
+					_game->BuyRandomTree(15);
 				}
 				else
 				{
@@ -38,12 +39,12 @@ OrchardView::OrchardView(Game* game) : View()
 			true, true
 		),
 		new Console::BasicButton(
-			"Buy a pear tree [15$]", PositionX(0.25f), PositionY(15),
+			"Buy a pear tree [12$]", PositionX(0.25f), PositionY(15),
 			[this]()
 			{
-				if (_game->HasEnoughMoney(15))
+				if (_game->HasEnoughMoney(12))
 				{
-					_game->BuyTree(PearTree(), 15);
+					_game->BuyTree(PearTree(), 12);
 				}
 				else
 				{
@@ -53,12 +54,12 @@ OrchardView::OrchardView(Game* game) : View()
 			true, true
 		),
 		new Console::BasicButton(
-			"Buy an apple tree [5$]", PositionX(0.75f), PositionY(15),
+			"Buy an apple tree [10$]", PositionX(0.75f), PositionY(15),
 			[this]()
 			{
-				if (_game->HasEnoughMoney(5))
+				if (_game->HasEnoughMoney(10))
 				{
-					_game->BuyTree(AppleTree(), 5);
+					_game->BuyTree(AppleTree(), 10);
 				}
 				else
 				{
@@ -71,6 +72,7 @@ OrchardView::OrchardView(Game* game) : View()
 			"Start the year", PositionX(0.5f), PositionY(20),
 			[this]()
 			{
+				_game->ClearStack();
 				_game->SetView(new GameView(_game));
 			},
 			true, true
@@ -80,7 +82,14 @@ OrchardView::OrchardView(Game* game) : View()
 	if (_game->GetYear() >= 5)
 	{
 		// Add the button to go to the special shop
-
+		addComponent(new Console::BasicButton(
+			"Special shop", PositionX(0.5f), PositionY(25),
+			[this]()
+			{
+				_game->ChangeView(new SpecialShopView(_game));
+			},
+			true, true
+		));
 	}
 }
 
@@ -89,7 +98,7 @@ void OrchardView::displayTrees(Console::Screen& screen) const
 {
 	// Display the three type of trees and their number
 	const std::unordered_map<std::string, int> treeCount = _game->GetTrees();
-	int y = 4;
+	int y = 8;
 
 	for (auto& tree : treeCount)
 	{
@@ -111,6 +120,18 @@ void OrchardView::Update(Console::Screen& screen)
 		.Str = "Money: " + _game->GetMoney(),
 		.X = 2,
 		.Y = 2
+	});
+
+	screen.Draw(Console::Text{
+		.Str = "Max harvest per year: " + std::to_string(_game->GetMaxHarvest()),
+		.X = 2,
+		.Y = 4
+	});
+
+	screen.Draw(Console::Text{
+		.Str = "Year " + std::to_string(_game->GetYear()),
+		.X = 2,
+		.Y = 6
 	});
 
 	displayTrees(screen);
