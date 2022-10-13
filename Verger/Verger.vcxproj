@@ -148,6 +148,7 @@
     <ClCompile Include="libs\ConsoleViewController\utilities\Random.cpp" />
     <ClCompile Include="model\views\OrchardView.cpp" />
     <ClCompile Include="model\tree\TreeFactory.cpp" />
+    <ClCompile Include="model\views\ResultView.cpp" />
     <ClCompile Include="Verger.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +174,7 @@
     <ClInclude Include="libs\ConsoleViewController\utilities\Random.h" />
     <ClInclude Include="model\views\OrchardView.h" />
     <ClInclude Include="model\tree\TreeFactory.h" />
+    <ClInclude Include="model\views\ResultView.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

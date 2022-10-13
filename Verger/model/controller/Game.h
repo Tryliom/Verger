@@ -17,13 +17,14 @@ private:
 	int _totalWeight = 0;
 	int _goalWeight = 2000000;
 	int _harvestLeft = 1;
-	int _currentYear = 0;
+	int _currentYear = 1;
 
 	int _maxHarvest = 1;
-	//TODO: Gain money from kg left after the goal deduction
 	int _money = 250;
 
 	[[nodiscard]] std::string formatNumber(int number, NumberType type) const;
+
+	[[nodiscard]] int getMoneyIncome() const { return (_totalWeight - _goalWeight) / 10000; }
 
 public:
 	Game();
@@ -32,6 +33,7 @@ public:
 	[[nodiscard]] std::string GetPotentialWeightFormatted() const;
 	[[nodiscard]] std::string GetCompletion() const;
 	[[nodiscard]] std::string GetMoney() const;
+	[[nodiscard]] std::string GetMoneyIncome() const;
 
 	[[nodiscard]] int GetCurrentWeight() const { return _totalWeight; }
 	[[nodiscard]] Month GetCurrentMonth() const { return _currentMonth; }
@@ -42,11 +44,13 @@ public:
 	[[nodiscard]] int GetYear() const { return _currentYear; }
 
 	[[nodiscard]] bool HasEnoughMoney(const int price) const { return _money >= price; }
+
 	[[nodiscard]] std::unordered_map<std::string, int> GetTrees() const;
 
 	void NextMonth();
 	void NextYear();
 	void Harvest();
+	void Restart();
 
 	void BuyRandomTree(int price);
 	void BuyTree(const Tree& tree, int price);

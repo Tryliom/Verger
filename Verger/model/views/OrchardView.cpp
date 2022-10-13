@@ -71,13 +71,17 @@ OrchardView::OrchardView(Game* game) : View()
 			"Start the year", PositionX(0.5f), PositionY(20),
 			[this]()
 			{
-				_game->NextYear();
-
 				_game->SetView(new GameView(_game));
 			},
 			true, true
 		)
 	});
+
+	if (_game->GetYear() >= 5)
+	{
+		// Add the button to go to the special shop
+
+	}
 }
 
 

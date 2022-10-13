@@ -125,6 +125,11 @@ std::string Game::GetMoney() const
 	return formatNumber(_money, NumberType::QUANTITY) + " $";
 }
 
+std::string Game::GetMoneyIncome() const
+{
+	return formatNumber(getMoneyIncome(), NumberType::QUANTITY) + " $";
+}
+
 void Game::Harvest()
 {
 	if (CanHarvest())
@@ -160,8 +165,31 @@ void Game::BuyTree(const Tree& tree, const int price)
 
 void Game::NextYear()
 {
+	_money += getMoneyIncome();
+	_goalWeight += 100000;
 	_currentYear++;
 	_totalWeight = 0;
 	_currentMonth = Month::JANUARY;
 	_harvestLeft = _maxHarvest;
+
+	SetView(new OrchardView(this));
+}
+
+void Game::Restart()
+{
+	_trees = {
+		CherryTree(),
+		PearTree(),
+		AppleTree()
+	};
+
+	_money = 250;
+	_currentYear = 1;
+	_goalWeight = 2000000;
+	_totalWeight = 0;
+	_currentMonth = Month::JANUARY;
+	_maxHarvest = 1;
+	_harvestLeft = _maxHarvest;
+
+	SetView(new OrchardView(this));
 }

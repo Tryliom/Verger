@@ -1,4 +1,5 @@
 #include "GameView.h"
+#include "ResultView.h"
 
 GameView::GameView(Game* game)
 {
@@ -17,12 +18,13 @@ GameView::GameView(Game* game)
 			"Next month", PositionX(0.75f), PositionY(0.5f),
 			[this]()
 			{
-				_game->NextMonth();
-
 				if (_game->GetCurrentMonth() == Month::DECEMBER)
 				{
-					//TODO: Show result of the year on another view
-
+					_game->SetView(new ResultView(_game));
+				}
+				else
+				{
+					_game->NextMonth();
 				}
 			},
 			true, true
