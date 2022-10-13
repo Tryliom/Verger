@@ -170,6 +170,7 @@ void Game::BuyHarvest(const int price)
 		_money -= price;
 
 		_maxHarvest++;
+		_harvestLeft = _maxHarvest;
 	}
 }
 

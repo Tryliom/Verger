@@ -11,7 +11,6 @@ SpecialShopView::SpecialShopView(Game* game)
 			"Buy an additional harvest [100$]", PositionX(0.25f), PositionY(10),
 			[this]()
 			{
-				//TODO: The max harvest is not applied for the next year
 				if (_game->HasEnoughMoney(100))
 				{
 					_game->BuyHarvest(100);
@@ -72,7 +71,7 @@ SpecialShopView::SpecialShopView(Game* game)
 			"Back", PositionX(0.5f), PositionY(20),
 			[this]()
 			{
-				_game->SetView(new OrchardView(_game));
+				_game->GoBack();
 			},
 			true, true
 		)
