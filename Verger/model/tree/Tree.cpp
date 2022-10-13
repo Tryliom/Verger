@@ -36,12 +36,17 @@ void Tree::OnMonth(const Month currentMonth)
 			_currentNbFruit = 0;
 			_currentNbMaxFruit = 0;
 		}
+		else
+		{
+			_currentNbFruit = GetRandomNumber(_minNbFruit, _maxNbFruit);
+			_currentNbMaxFruit = _currentNbFruit;
+		}
 	}
 
 	if (_currentNbFruit != 0)
 	{
 		// The harvest period
-		if (currentMonth >= Month::APRIL && currentMonth < _startHarvestDate)
+		if (currentMonth >= Month::APRIL && currentMonth <= _endHarvestDate)
 		{
 			// Lost 3 to 10% of fruits per month
 			_currentNbFruit -= GetRandomNumber(_currentNbFruit * 3 / 100, _currentNbFruit * 10 / 100);

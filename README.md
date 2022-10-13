@@ -12,8 +12,8 @@ There is 3 types of tree in the orchard: Cherry, apple and peer.
 
 Every tree go by different steps:
 - April: 5% chance to loose all the fruits
-- At the start of harvest month: a random amount of fruits growth instantly
-- Between the start and the end of harvest time: lose 3 to 10% of the fruits each months, due to birds and parasites
+- At the start of growth month: a random amount of fruits growth instantly
+- Between the start of growth and the end of harvest time: lose 3 to 10% of the fruits each months, due to birds and parasites
 - At the end of harvest month to december: lose progressively the fruits
 
 The farmer need to choose when he harvest all his tree, he can choose only 1 month in the year and need to have at lease 2000 kg of fruits.

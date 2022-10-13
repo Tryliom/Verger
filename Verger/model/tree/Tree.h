@@ -21,6 +21,7 @@ public:
 
 	[[nodiscard]] int GetNbFruit() const { return _currentNbFruit; }
 	[[nodiscard]] int GetCurrentWeight() const { return _currentNbFruit * _fruitWeight; }
+	[[nodiscard]] bool CanBeHarvested(const Month currentMonth) const { return _currentNbFruit > 0 && currentMonth >= _startHarvestDate && currentMonth <= Month::DECEMBER; }
 
 	/**
 	 * \brief Called every month
