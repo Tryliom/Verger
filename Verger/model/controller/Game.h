@@ -8,6 +8,14 @@ enum class NumberType
 	QUANTITY
 };
 
+struct TreeInformation
+{
+	std::string Name;
+	int CurrentWeight;
+	int CurrentNbFruit;
+	bool CanBeHarvested;
+};
+
 class Game final : public Console::Controller
 {
 private:
@@ -18,9 +26,9 @@ private:
 	int _goalWeight = 2000000;
 	int _harvestLeft = 1;
 	int _currentYear = 1;
+	int _money = 250;
 
 	int _maxHarvest = 1;
-	int _money = 250;
 
 	[[nodiscard]] std::string formatNumber(int number, NumberType type) const;
 
@@ -47,6 +55,7 @@ public:
 	[[nodiscard]] bool HasEnoughMoney(const int price) const { return _money >= price; }
 
 	[[nodiscard]] std::unordered_map<std::string, int> GetTrees() const;
+	[[nodiscard]] std::vector<std::string> GetTreeInformation() const;
 
 	void NextMonth();
 	void NextYear();

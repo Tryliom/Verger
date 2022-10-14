@@ -79,11 +79,11 @@ OrchardView::OrchardView(Game* game) : View()
 		)
 	});
 
-	if (_game->GetYear() <= 5)
+	if (_game->GetYear() % 5 == 0)
 	{
 		// Add the button to go to the special shop
 		addComponent(new Console::BasicButton(
-			"Special shop", PositionX(0.5f), PositionY(25),
+			"Special shop", PositionX(0.5f), PositionY(15),
 			[this]()
 			{
 				_game->ChangeView(new SpecialShopView(_game));

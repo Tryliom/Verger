@@ -5,12 +5,15 @@ GameView::GameView(Game* game)
 {
 	_game = game;
 
+	_treeInformation = _game->GetTreeInformation();
+
 	setComponents({
 		new Console::BasicButton(
 			"Harvest", PositionX(0.25f), PositionY(0.5f),
 			[this]()
 			{
 				_game->Harvest();
+				_treeInformation = _game->GetTreeInformation();
 			},
 			true, true
 		),
@@ -25,6 +28,7 @@ GameView::GameView(Game* game)
 				else
 				{
 					_game->NextMonth();
+					_treeInformation = _game->GetTreeInformation();
 				}
 			},
 			true, true
@@ -43,21 +47,9 @@ void GameView::Update(Console::Screen& screen)
 	});
 
 	screen.Draw(Console::Text{
-		.Str = "Fruits: " + _game->GetNbFruit(),
-		.X = 2,
-		.Y = 4
-	});
-
-	screen.Draw(Console::Text{
-		.Str = "Harvest potential weight: " + _game->GetPotentialWeightFormatted(),
-		.X = 2,
-		.Y = 6
-	});
-
-	screen.Draw(Console::Text{
 		.Str = "Harvested weight: " + _game->GetCompletion(),
 		.X = 2,
-		.Y = 8,
+		.Y = 4,
 		.Background = _game->HasSurpassGoal() ? Console::Background::GREEN : Console::Background::RED,
 		.Foreground = Console::Foreground::WHITE,
 	});
@@ -65,8 +57,17 @@ void GameView::Update(Console::Screen& screen)
 	screen.Draw(Console::Text{
 		.Str = "Harvest left: " + std::to_string(_game->GetHarvestLeft()),
 		.X = 2,
-		.Y = 10
+		.Y = 6
 	});
+
+	for (int i = 0; i < static_cast<int>(_treeInformation.size()); i++)
+	{
+		screen.Draw(Console::Text{
+			.Str = _treeInformation[i],
+			.X = 2,
+			.Y = 8 + i * 2
+			});
+	}
 }
 
 void GameView::OnKeyPressed(const char key)

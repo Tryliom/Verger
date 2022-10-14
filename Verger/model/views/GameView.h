@@ -7,6 +7,7 @@ class GameView : public Console::View
 private:
 	Game* _game;
 
+	std::vector<std::string> _treeInformation;
 public:
 	explicit GameView(Game* game);
 

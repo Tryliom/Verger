@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include <format>
+#include <ranges>
 
 #include "../views/OrchardView.h"
 #include "../tree/TreeFactory.h"
@@ -75,6 +76,51 @@ std::unordered_map<std::string, int> Game::GetTrees() const
 	}
 
 	return trees;
+}
+
+std::vector<std::string> Game::GetTreeInformation() const
+{
+	std::unordered_map<std::string, TreeInformation> treeData;
+
+	for (const auto& tree : _trees)
+	{
+		if (!treeData.contains(tree.GetName()))
+		{
+			treeData[tree.GetName()] = TreeInformation(tree.GetName(), 0, 0, tree.CanBeHarvested(_currentMonth));
+		}
+
+		treeData[tree.GetName()].CurrentNbFruit += tree.GetNbFruit();
+		treeData[tree.GetName()].CurrentWeight += tree.GetCurrentWeight();
+	}
+
+	std::vector<std::string> treeInformation = {};
+	int totalFruits = 0;
+	int totalWeight = 0;
+
+	for (const auto& data : treeData | std::views::values)
+	{
+		treeInformation.emplace_back(
+			data.Name + ": " +
+			formatNumber(data.CurrentNbFruit, NumberType::QUANTITY) + " fruits (" +
+			formatNumber(data.CurrentWeight, NumberType::WEIGHT) + ")" +
+			(data.CanBeHarvested ? " READY" : " NOT READY")
+		);
+
+		totalFruits += data.CurrentNbFruit;
+
+		if (data.CanBeHarvested)
+		{
+			totalWeight += data.CurrentWeight;
+		}
+	}
+
+	treeInformation.emplace_back(
+		"Total: " +
+		formatNumber(totalFruits, NumberType::QUANTITY) + " fruits (" +
+		formatNumber(totalWeight, NumberType::WEIGHT) + " READY)"
+	);
+
+	return treeInformation;
 }
 
 void Game::NextMonth()
