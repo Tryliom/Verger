@@ -93,22 +93,7 @@ void SpecialShopView::OnKeyPressed(char key)
 {
 	_errorMessage.clear();
 
-	if (Console::Key::Up == key)
-	{
-		setCurrentButton(getCurrentButton() - 2);
-	}
-	else if (Console::Key::Down == key)
-	{
-		setCurrentButton(getCurrentButton() + 2);
-	}
-	else if (Console::Key::Right == key)
-	{
-		incrementCurrentButton();
-	}
-	else if (Console::Key::Left == key)
-	{
-		decrementCurrentButton();
-	}
+	moveBetweenComponents(key, true, true);
 
 	View::OnKeyPressed(key);
 }
