@@ -89,11 +89,11 @@ void SpecialShopView::Update(Console::Screen& screen)
 	});
 }
 
-void SpecialShopView::OnKeyPressed(char key)
+void SpecialShopView::OnKeyPressed(const char key)
 {
 	_errorMessage.clear();
 
-	moveBetweenComponents(key, true, true);
+	moveBetweenComponents(key);
 
 	View::OnKeyPressed(key);
 }

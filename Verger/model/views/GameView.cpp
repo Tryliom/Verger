@@ -66,20 +66,13 @@ void GameView::Update(Console::Screen& screen)
 			.Str = _treeInformation[i],
 			.X = 2,
 			.Y = 8 + i * 2
-			});
+		});
 	}
 }
 
 void GameView::OnKeyPressed(const char key)
 {
-	if (Console::Key::Right == key)
-	{
-		incrementCurrentButton();
-	}
-	else if (Console::Key::Left == key)
-	{
-		decrementCurrentButton();
-	}
+	moveBetweenComponents(key);
 
 	View::OnKeyPressed(key);
 }

@@ -153,7 +153,7 @@ void OrchardView::OnKeyPressed(const char key)
 {
 	_errorMessage.clear();
 
-	moveBetweenComponents(key, true, true);
+	moveBetweenComponents(key);
 
 	View::OnKeyPressed(key);
 }

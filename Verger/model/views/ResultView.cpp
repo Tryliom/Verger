@@ -7,7 +7,7 @@ ResultView::ResultView(Game* game)
 	if (_game->HasSurpassGoal())
 	{
 		addComponent(new Console::BasicButton(
-			"Return to our orchard", PositionX(0.5f), PositionY(0.5f),
+			"Return to your orchard", PositionX(0.5f), PositionY(0.5f),
 			[this]()
 			{
 				_game->NextYear();
