@@ -1,5 +1,6 @@
 #pragma once
 #include "../../libs/ConsoleViewController/ConsoleViewController.h"
+#include "../controller/Game.h"
 
 struct Bar
 {
@@ -16,5 +17,8 @@ struct Bar
 namespace RenderUtility
 {
 	void DrawBar(Console::Screen& screen, const Bar& bar);
+	void DisplayAverageWeightPerMonth(Console::Screen& screen, const std::unordered_map<Month, FruitsWeightData>& averageWeightPerMonth, const Game* game);
+	void DisplayTreeData(Console::Screen& screen, const std::vector<TreeData>& treeData);
+	void DisplayTreeCount(Console::Screen& screen, const Game* game, int y);
 };
 
