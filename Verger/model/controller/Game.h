@@ -16,6 +16,7 @@ struct TreeInformation
 	bool CanBeHarvested;
 };
 
+// Music come from Atomicrops game by AtomicTorch Studio (https://atomicrops.com/)
 const std::string MAIN_THEME_PATH = "assets/audio/main_theme.wav";
 const std::string ORCHARD_THEME_PATH = "assets/audio/orchard_theme.wav";
 const std::string VICTORY_THEME_PATH = "assets/audio/victory_theme.wav";

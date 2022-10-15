@@ -52,7 +52,7 @@ void ResultView::Update(Console::Screen& screen)
 		});
 
 		screen.Draw(Console::Text{
-			.Str = "You have gained " + _game->GetMoneyIncome() + " !",
+			.Str = "You have gained " + _game->GetMoneyIncome() + " and one tree of each type !",
 			.X = Console::Screen::WIDTH / 2,
 			.Y = 6,
 			.XCentered = true
