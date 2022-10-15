@@ -1,4 +1,7 @@
 #include "OrchardView.h"
+
+#include <ranges>
+
 #include "GameView.h"
 #include "SpecialShopView.h"
 #include "../tree/TreeFactory.h"
@@ -8,6 +11,9 @@ OrchardView::OrchardView(Game* game) : View()
 {
 	_game = game;
 	_treeData = TreeFactory::GetTreeData();
+	_averageWeightPerMonth = _game->GetAverageWeightPerMonth();
+
+	Console::AudioManager::Play(MAIN_THEME_PATH, true);
 
 	setComponents({
 		new Console::BasicButton(
@@ -17,6 +23,7 @@ OrchardView::OrchardView(Game* game) : View()
 				if (_game->HasEnoughMoney(25))
 				{
 					_game->BuyTree(CherryTree(), 25);
+					updateAverageWeightPerMonth();
 				}
 				else
 				{
@@ -32,6 +39,7 @@ OrchardView::OrchardView(Game* game) : View()
 				if (_game->HasEnoughMoney(12))
 				{
 					_game->BuyTree(PearTree(), 12);
+					updateAverageWeightPerMonth();
 				}
 				else
 				{
@@ -47,6 +55,7 @@ OrchardView::OrchardView(Game* game) : View()
 				if (_game->HasEnoughMoney(10))
 				{
 					_game->BuyTree(AppleTree(), 10);
+					updateAverageWeightPerMonth();
 				}
 				else
 				{
@@ -85,7 +94,7 @@ void OrchardView::displayTrees(Console::Screen& screen) const
 {
 	// Display the three type of trees and their number
 	const std::unordered_map<TreeType, int> treeCount = _game->GetTrees();
-	int y = 8;
+	int y = 6;
 
 	for (auto& tree : treeCount)
 	{
@@ -129,6 +138,85 @@ void OrchardView::displayTreeData(Console::Screen& screen) const
 	}
 }
 
+void OrchardView::displayAverageWeightPerMonth(Console::Screen& screen) const
+{
+	const int widthPerMonth = PositionX(0.8f).GetValue(true) / 12;
+	const int widthBar = widthPerMonth / 3;
+	const int maxHeight = PositionY(-30, 0.9f).GetValue(true);
+	const int yTop = PositionY(30).GetValue(true);
+	const int xLeft = PositionX(0.1f).GetValue(true);
+	int maxValue = _game->GetGoalWeight();
+
+	for (const auto& weight : _averageWeightPerMonth | std::views::values)
+	{
+		if (weight > maxValue)
+		{
+			maxValue = weight;
+		}
+	}
+
+	// Draw bars for each month based on the max value
+	int x = xLeft;
+	int y = yTop + maxHeight;
+
+	for (const auto& weight : _averageWeightPerMonth | std::views::values)
+	{
+		if (weight > 0)
+		{
+			// Growth fruit weight
+			screen.DrawRect(
+				x + widthBar,
+				y - maxHeight * weight / maxValue,
+				widthBar,
+				maxHeight * weight / maxValue,
+				RGB(0, 204, 102),
+				false
+			);
+		}
+
+		x += widthPerMonth;
+	}
+
+	// Draw bottom line
+	screen.DrawLine(
+		PositionX(0.1f).GetValue(true),
+		y,
+		PositionX(0.9f).GetValue(true),
+		y,
+		3,
+		RGB(200, 200, 200)
+	);
+
+	// Draw left line
+	screen.DrawLine(
+		xLeft,
+		y,
+		xLeft,
+		yTop,
+		3,
+		RGB(200, 200, 200)
+	);
+
+	// Draw goal line
+	screen.DrawLine(
+		PositionX(0.1f).GetValue(true),
+		y - maxHeight * _game->GetGoalWeight() / maxValue,
+		PositionX(0.9f).GetValue(true),
+		y - maxHeight * _game->GetGoalWeight() / maxValue,
+		3,
+		RGB(255, 0, 0)
+	);
+}
+
+void OrchardView::updateAverageWeightPerMonth()
+{
+	_game->AddToQueue([this]()
+		{
+			_averageWeightPerMonth = _game->GetAverageWeightPerMonth();
+		}
+	);
+}
+
 void OrchardView::Update(Console::Screen& screen)
 {
 	View::Update(screen);
@@ -152,8 +240,8 @@ void OrchardView::Update(Console::Screen& screen)
 	});
 
 	displayTrees(screen);
-
 	displayTreeData(screen);
+	displayAverageWeightPerMonth(screen);
 
 	// Display the error message
 	if (!_errorMessage.empty())

@@ -180,6 +180,11 @@
     <ClInclude Include="model\views\SpecialShopView.h" />
     <ClInclude Include="model\utility\RenderUtility.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\audio\defeat_theme.wav" />
+    <Media Include="assets\audio\main_theme.wav" />
+    <Media Include="assets\audio\victory_theme.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

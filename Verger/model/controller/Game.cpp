@@ -123,6 +123,26 @@ std::vector<std::string> Game::GetTreeInformation() const
 	return treeInformation;
 }
 
+std::unordered_map<Month, int> Game::GetAverageWeightPerMonth()
+{
+	std::unordered_map<Month, int> averageWeightPerMonth;
+
+	for (auto& tree : _trees)
+	{
+		for (const auto& [month, weight] : tree.GetAverageWeightPerMonth())
+		{
+			if (!averageWeightPerMonth.contains(month))
+			{
+				averageWeightPerMonth[month] = 0;
+			}
+
+			averageWeightPerMonth[month] += weight;
+		}
+	}
+
+	return averageWeightPerMonth;
+}
+
 void Game::NextMonth()
 {
 	if (_currentMonth != Month::DECEMBER)

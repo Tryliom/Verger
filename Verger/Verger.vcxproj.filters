@@ -162,4 +162,15 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\audio\defeat_theme.wav">
+      <Filter>Fichiers de ressources</Filter>
+    </Media>
+    <Media Include="assets\audio\main_theme.wav">
+      <Filter>Fichiers de ressources</Filter>
+    </Media>
+    <Media Include="assets\audio\victory_theme.wav">
+      <Filter>Fichiers de ressources</Filter>
+    </Media>
+  </ItemGroup>
 </Project>

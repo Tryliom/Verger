@@ -40,6 +40,11 @@ public:
 
 	[[nodiscard]] bool CanBeHarvested(const Month currentMonth) const;
 	TreeData GetData() const;
+	/**
+	 * \brief Get the average weight of the fruits per month
+	 * \return The average weight of the fruits per month
+	 */
+	std::unordered_map<Month, int> GetAverageWeightPerMonth();
 
 	/**
 	 * \brief Called every month

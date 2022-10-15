@@ -16,6 +16,10 @@ struct TreeInformation
 	bool CanBeHarvested;
 };
 
+const std::string MAIN_THEME_PATH = "assets/audio/main_theme.wav";
+const std::string VICTORY_THEME_PATH = "assets/audio/victory_theme.wav";
+const std::string DEFEAT_THEME_PATH = "assets/audio/defeat_theme.wav";
+
 class Game final : public Console::Controller
 {
 private:
@@ -56,6 +60,7 @@ public:
 
 	[[nodiscard]] std::unordered_map<TreeType, int> GetTrees() const;
 	[[nodiscard]] std::vector<std::string> GetTreeInformation() const;
+	std::unordered_map<Month, int> GetAverageWeightPerMonth();
 
 	void NextMonth();
 	void NextYear();

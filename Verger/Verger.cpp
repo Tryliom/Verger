@@ -6,7 +6,7 @@ int main()
 
     Console::Screen::EnableVirtualTerminalProcessing();
     Console::Screen::SetTitle("Orchard simulator");
-    Console::Screen::SetWindowSize(1200, 700);
+    Console::Screen::SetWindowSize(1200, 1000);
     Console::Screen::CenterWindow();
 
     game.Start();
