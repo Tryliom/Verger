@@ -88,7 +88,7 @@ OrchardView::OrchardView(Game* game) : View()
 	{
 		// Add the button to go to the special shop
 		addComponent(new Console::BasicButton(
-			"Special shop", PositionX(0.5f), PositionY(15),
+			"Special shop", PositionX(0.3f), PositionY(25),
 			[this]()
 			{
 				_game->ChangeView(new SpecialShopView(_game));
@@ -153,7 +153,7 @@ void OrchardView::displayAverageWeightPerMonth(Console::Screen& screen) const
 	const int widthBar = widthPerMonth / 3;
 	const int maxHeight = PositionY(-30, 0.9f).GetValue(true);
 	const int yTop = PositionY(30).GetValue(true);
-	const int xLeft = PositionX(0.1f).GetValue(true);
+	const int xLeft = PositionX(0.15f).GetValue(true);
 	int maxValue = _game->GetGoalWeight();
 
 	for (const auto& fruits : _averageWeightPerMonth | std::views::values)
@@ -161,6 +161,10 @@ void OrchardView::displayAverageWeightPerMonth(Console::Screen& screen) const
 		if (fruits.GrowthWeight > maxValue)
 		{
 			maxValue = fruits.GrowthWeight;
+		}
+		if (fruits.HarvestableWeight > maxValue)
+		{
+			maxValue = fruits.HarvestableWeight;
 		}
 	}
 
@@ -201,9 +205,9 @@ void OrchardView::displayAverageWeightPerMonth(Console::Screen& screen) const
 
 	// Draw bottom line
 	screen.DrawLine(
-		PositionX(0.1f).GetValue(true),
+		xLeft,
 		y,
-		PositionX(0.9f).GetValue(true),
+		xLeft + PositionX(0.8f).GetValue(true),
 		y,
 		3,
 		RGB(200, 200, 200)
@@ -221,9 +225,9 @@ void OrchardView::displayAverageWeightPerMonth(Console::Screen& screen) const
 
 	// Draw goal line
 	screen.DrawLine(
-		PositionX(0.1f).GetValue(true),
+		xLeft,
 		y - maxHeight * _game->GetGoalWeight() / maxValue,
-		PositionX(0.9f).GetValue(true),
+		xLeft + PositionX(0.8f).GetValue(true),
 		y - maxHeight * _game->GetGoalWeight() / maxValue,
 		3,
 		RGB(255, 0, 0)
@@ -243,6 +247,49 @@ void OrchardView::displayAverageWeightPerMonth(Console::Screen& screen) const
 
 		x += widthPerMonth;
 	}
+
+	// Draw legends, green for growth, orange for harvestable with a color next to the text
+	screen.Draw(Console::Text{
+		.Str = "Total",
+		.X = 4,
+		.Y = yTop / Console::Screen::PIXEL_RATIO_Y + 3
+	});
+
+	screen.DrawRect(
+		PositionX(2).GetValue(true),
+		yTop + PositionY(3).GetValue(true) + PositionY(1).GetValue(true) / 4,
+		10,
+		10,
+		RGB(0, 204, 102)
+	);
+
+	screen.Draw(Console::Text{
+		.Str = "Harvestable",
+		.X = 4,
+		.Y = yTop / Console::Screen::PIXEL_RATIO_Y + 5
+		});
+
+	screen.DrawRect(
+		PositionX(2).GetValue(true),
+		yTop + PositionY(5).GetValue(true) + PositionY(1).GetValue(true) / 4,
+		10,
+		10,
+		RGB(255, 128, 0)
+	);
+
+	screen.Draw(Console::Text{
+		.Str = "Goal",
+		.X = 4,
+		.Y = yTop / Console::Screen::PIXEL_RATIO_Y + 7
+		});
+
+	screen.DrawRect(
+		PositionX(2).GetValue(true),
+		yTop + PositionY(7).GetValue(true) + PositionY(1).GetValue(true) / 4,
+		10,
+		10,
+		RGB(255, 0, 0)
+	);
 }
 
 void OrchardView::updateAverageWeightPerMonth()

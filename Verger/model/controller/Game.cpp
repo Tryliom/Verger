@@ -241,11 +241,7 @@ void Game::NextYear()
 
 void Game::Restart()
 {
-	_trees = {
-		CherryTree(),
-		PearTree(),
-		AppleTree()
-	};
+	_trees = {};
 
 	_money = 250;
 	_currentYear = 1;

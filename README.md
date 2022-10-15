@@ -25,8 +25,9 @@ Clone this repo with command `git clone https://github.com/Tryliom/Verger --recu
 # To do
 
 - Add lines to show when each tree can be harvest
-- Add legends for the graph and the table
+- Add legends for the table
 - Add bars on the game view instead of only text
 - Add more upgrades in special shop
 - Increase tree prices each X trees
 - Create shop buttons to manage them easily
+- Move render functions into RenderUtility to keep a clean view
