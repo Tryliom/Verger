@@ -1,30 +1,17 @@
 #include "OrchardView.h"
-
 #include "GameView.h"
 #include "SpecialShopView.h"
+#include "../tree/TreeFactory.h"
+#include "../utility/RenderUtility.h"
 
 OrchardView::OrchardView(Game* game) : View()
 {
 	_game = game;
+	_treeData = TreeFactory::GetTreeData();
 
 	setComponents({
 		new Console::BasicButton(
-			"Buy a random tree [15$]", PositionX(0.25f), PositionY(10),
-			[this]()
-			{
-				if (_game->HasEnoughMoney(15))
-				{
-					_game->BuyRandomTree(15);
-				}
-				else
-				{
-					_errorMessage = "Not enough money";
-				}
-			},
-			true, true
-		),
-		new Console::BasicButton(
-			"Buy a cherry tree [25$]", PositionX(0.75f), PositionY(10),
+			"Buy a cherry tree [25$]", PositionX(0.3f), PositionY(10),
 			[this]()
 			{
 				if (_game->HasEnoughMoney(25))
@@ -39,7 +26,7 @@ OrchardView::OrchardView(Game* game) : View()
 			true, true
 		),
 		new Console::BasicButton(
-			"Buy a pear tree [12$]", PositionX(0.25f), PositionY(15),
+			"Buy a pear tree [12$]", PositionX(0.3f), PositionY(15),
 			[this]()
 			{
 				if (_game->HasEnoughMoney(12))
@@ -54,7 +41,7 @@ OrchardView::OrchardView(Game* game) : View()
 			true, true
 		),
 		new Console::BasicButton(
-			"Buy an apple tree [10$]", PositionX(0.75f), PositionY(15),
+			"Buy an apple tree [10$]", PositionX(0.3f), PositionY(20),
 			[this]()
 			{
 				if (_game->HasEnoughMoney(10))
@@ -69,7 +56,7 @@ OrchardView::OrchardView(Game* game) : View()
 			true, true
 		),
 		new Console::BasicButton(
-			"Start the year", PositionX(0.5f), PositionY(20),
+			"Start the year", PositionX(0.5f), PositionY(25),
 			[this]()
 			{
 				_game->ClearStack();
@@ -97,18 +84,48 @@ OrchardView::OrchardView(Game* game) : View()
 void OrchardView::displayTrees(Console::Screen& screen) const
 {
 	// Display the three type of trees and their number
-	const std::unordered_map<std::string, int> treeCount = _game->GetTrees();
+	const std::unordered_map<TreeType, int> treeCount = _game->GetTrees();
 	int y = 8;
 
 	for (auto& tree : treeCount)
 	{
 		screen.Draw(Console::Text{
-			.Str = tree.first + ": " + std::to_string(tree.second),
+			.Str = TreeFactory::GetTreeName(tree.first) + ": " + std::to_string(tree.second),
 			.X = 2,
 			.Y = y
 		});
 
 		y++;
+	}
+}
+
+void OrchardView::displayTreeData(Console::Screen& screen) const
+{
+	screen.Draw(Console::Text{
+		.Str = "Production per year",
+		.X = PositionX(0.4f).GetValue(),
+		.Y = 5
+	});
+
+	const float widthBar = static_cast<float>(PositionX(0.15f).GetValue(true));
+	int y = 10;
+
+	for (auto& data : _treeData)
+	{
+		RenderUtility::DrawBar(
+			screen,
+			Bar{
+				.X = PositionX(1, 0.4f).GetValue(true),
+				.Y = PositionY(y).GetValue(true) + PositionY(1).GetValue(true) / 3,
+				.Width = static_cast<int>(widthBar * data.MaxTotalWeight),
+				.Height = 8,
+				.Percent = data.MinTotalWeight / data.MaxTotalWeight,
+				.Color = RGB(0, 204, 102),
+				.BackgroundColor = RGB(0, 153, 76),
+				.YCentered = true
+			}
+		);
+		y += 5;
 	}
 }
 
@@ -130,11 +147,13 @@ void OrchardView::Update(Console::Screen& screen)
 
 	screen.Draw(Console::Text{
 		.Str = "Year " + std::to_string(_game->GetYear()),
-		.X = 2,
-		.Y = 6
+		.X = Console::Screen::WIDTH / 2,
+		.Y = 2
 	});
 
 	displayTrees(screen);
+
+	displayTreeData(screen);
 
 	// Display the error message
 	if (!_errorMessage.empty())

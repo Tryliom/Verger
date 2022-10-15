@@ -61,18 +61,18 @@ std::string Game::formatNumber(const int number, NumberType type) const
 	return std::format("{:.2f}", numberToDisplay) + unit;
 }
 
-std::unordered_map<std::string, int> Game::GetTrees() const
+std::unordered_map<TreeType, int> Game::GetTrees() const
 {
-	std::unordered_map<std::string, int> trees;
+	std::unordered_map<TreeType, int> trees;
 
 	for (const auto& tree : _trees)
 	{
-		if (!trees.contains(tree.GetName()))
+		if (!trees.contains(tree.GetType()))
 		{
-			trees[tree.GetName()] = 0;
+			trees[tree.GetType()] = 0;
 		}
 		
-		trees[tree.GetName()]++;
+		trees[tree.GetType()]++;
 	}
 
 	return trees;
@@ -80,17 +80,17 @@ std::unordered_map<std::string, int> Game::GetTrees() const
 
 std::vector<std::string> Game::GetTreeInformation() const
 {
-	std::unordered_map<std::string, TreeInformation> treeData;
+	std::unordered_map<TreeType, TreeInformation> treeData;
 
 	for (const auto& tree : _trees)
 	{
-		if (!treeData.contains(tree.GetName()))
+		if (!treeData.contains(tree.GetType()))
 		{
-			treeData[tree.GetName()] = TreeInformation(tree.GetName(), 0, 0, tree.CanBeHarvested(_currentMonth));
+			treeData[tree.GetType()] = TreeInformation(tree.GetType(), 0, 0, tree.CanBeHarvested(_currentMonth));
 		}
 
-		treeData[tree.GetName()].CurrentNbFruit += tree.GetNbFruit();
-		treeData[tree.GetName()].CurrentWeight += tree.GetCurrentWeight();
+		treeData[tree.GetType()].CurrentNbFruit += tree.GetNbFruit();
+		treeData[tree.GetType()].CurrentWeight += tree.GetCurrentWeight();
 	}
 
 	std::vector<std::string> treeInformation = {};
@@ -100,7 +100,7 @@ std::vector<std::string> Game::GetTreeInformation() const
 	for (const auto& data : treeData | std::views::values)
 	{
 		treeInformation.emplace_back(
-			data.Name + ": " +
+			TreeFactory::GetTreeName(data.Type) + ": " +
 			formatNumber(data.CurrentNbFruit, NumberType::QUANTITY) + " fruits (" +
 			formatNumber(data.CurrentWeight, NumberType::WEIGHT) + ")" +
 			(data.CanBeHarvested ? " READY" : " NOT READY")
@@ -186,16 +186,6 @@ void Game::Harvest()
 		}
 
 		_harvestLeft--;
-	}
-}
-
-void Game::BuyRandomTree(int price)
-{
-	if (_money >= price)
-	{
-		_money -= price;
-
-		_trees.emplace_back(TreeFactory::GetRandomTree());
 	}
 }
 

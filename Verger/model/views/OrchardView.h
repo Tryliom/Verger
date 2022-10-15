@@ -6,10 +6,11 @@ class OrchardView : public Console::View
 {
 private:
 	Game* _game;
-
 	std::string _errorMessage;
+	std::vector<TreeData> _treeData;
 
 	void displayTrees(Console::Screen& screen) const;
+	void displayTreeData(Console::Screen& screen) const;
 public:
 	explicit OrchardView(Game* game);
 

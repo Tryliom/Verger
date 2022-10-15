@@ -1,12 +1,27 @@
 #pragma once
-#include <string>
-
 #include "Month.h"
+
+enum class TreeType
+{
+	CHERRY,
+	PEAR,
+	APPLE,
+	END
+};
+
+struct TreeData
+{
+	TreeType Type;
+	float MinTotalWeight;
+	float MaxTotalWeight;
+	Month StartHarvestDate;
+	Month EndHarvestDate;
+};
 
 class Tree
 {
 private:
-	std::string _name;
+	TreeType _type;
 	Month _startHarvestDate;
 	Month _endHarvestDate;
 
@@ -17,13 +32,14 @@ private:
 	int _currentNbMaxFruit;
 	int _currentNbFruit;
 public:
-	Tree(const std::string& name, Month startHarvestDate, Month endHarvestDate, int fruitWeight, int minNbFruit, int maxNbFruit);
+	Tree(TreeType type, Month startHarvestDate, Month endHarvestDate, int fruitWeight, int minNbFruit, int maxNbFruit);
 
 	[[nodiscard]] int GetNbFruit() const { return _currentNbFruit; }
 	[[nodiscard]] int GetCurrentWeight() const { return _currentNbFruit * _fruitWeight; }
-	[[nodiscard]] std::string GetName() const { return _name; }
+	[[nodiscard]] TreeType GetType() const { return _type; }
 
 	[[nodiscard]] bool CanBeHarvested(const Month currentMonth) const;
+	TreeData GetData() const;
 
 	/**
 	 * \brief Called every month
@@ -40,17 +56,17 @@ public:
 class CherryTree final : public Tree
 {
 public:
-	CherryTree() : Tree("Cherry tree", Month::MAY, Month::JUNE, 5, 45000, 60000) {}
+	CherryTree() : Tree(TreeType::CHERRY, Month::MAY, Month::JUNE, 5, 45000, 60000) {}
 };
 
 class PearTree final : public Tree
 {
 public:
-	PearTree() : Tree("Pear tree", Month::OCTOBER, Month::NOVEMBER, 90, 1600, 2500) {}
+	PearTree() : Tree(TreeType::PEAR, Month::OCTOBER, Month::NOVEMBER, 90, 1600, 2500) {}
 };
 
 class AppleTree final : public Tree
 {
 public:
-	AppleTree() : Tree("Apple tree", Month::SEPTEMBER, Month::NOVEMBER, 150, 600, 850) {}
+	AppleTree() : Tree(TreeType::APPLE, Month::SEPTEMBER, Month::NOVEMBER, 150, 600, 850) {}
 };

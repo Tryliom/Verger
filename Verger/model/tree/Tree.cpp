@@ -2,11 +2,11 @@
 #include "../../libs/ConsoleViewController/ConsoleViewController.h"
 
 Tree::Tree(
-	const std::string& name, const Month startHarvestDate, const Month endHarvestDate, 
+	const TreeType type, const Month startHarvestDate, const Month endHarvestDate,
 	const int fruitWeight, const int minNbFruit, const int maxNbFruit
 )
 {
-	_name = name;
+	_type = type;
 	_startHarvestDate = startHarvestDate;
 	_endHarvestDate = endHarvestDate;
 	_fruitWeight = fruitWeight;
@@ -19,6 +19,18 @@ Tree::Tree(
 bool Tree::CanBeHarvested(const Month currentMonth) const
 {
 	return _currentNbFruit > 0 && currentMonth >= _startHarvestDate && currentMonth <= Month::DECEMBER;
+}
+
+TreeData Tree::GetData() const
+{
+	return TreeData
+	(
+		_type,
+		_minNbFruit * _fruitWeight,
+		_maxNbFruit * _fruitWeight,
+		_startHarvestDate,
+		_endHarvestDate
+	);
 }
 
 void Tree::OnMonth(const Month currentMonth)

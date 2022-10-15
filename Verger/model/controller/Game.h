@@ -10,7 +10,7 @@ enum class NumberType
 
 struct TreeInformation
 {
-	std::string Name;
+	TreeType Type;
 	int CurrentWeight;
 	int CurrentNbFruit;
 	bool CanBeHarvested;
@@ -54,7 +54,7 @@ public:
 
 	[[nodiscard]] bool HasEnoughMoney(const int price) const { return _money >= price; }
 
-	[[nodiscard]] std::unordered_map<std::string, int> GetTrees() const;
+	[[nodiscard]] std::unordered_map<TreeType, int> GetTrees() const;
 	[[nodiscard]] std::vector<std::string> GetTreeInformation() const;
 
 	void NextMonth();
@@ -62,7 +62,6 @@ public:
 	void Harvest();
 	void Restart();
 
-	void BuyRandomTree(int price);
 	void BuyTree(const Tree& tree, int price);
 	void BuyHarvest(int price);
 
