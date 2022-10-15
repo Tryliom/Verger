@@ -21,3 +21,12 @@ The farmer need to choose when he harvest all his tree, he can choose only 1 mon
 # Install
 
 Clone this repo with command `git clone https://github.com/Tryliom/Verger --recursive`
+
+# To do
+
+- Add lines to show when each tree can be harvest
+- Add legends for the graph and the table
+- Add bars on the game view instead of only text
+- Add more upgrades in special shop
+- Increase tree prices each X trees
+- Create shop buttons to manage them easily
