@@ -68,6 +68,7 @@ public:
 	void Harvest();
 	void Restart();
 
+	void AddTree(const Tree& tree);
 	void BuyTree(const Tree& tree, int price);
 	void BuyHarvest(int price);
 

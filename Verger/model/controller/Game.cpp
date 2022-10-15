@@ -8,11 +8,7 @@
 
 Game::Game()
 {
-	_trees = {
-		CherryTree(),
-		PearTree(),
-		AppleTree()
-	};
+	_trees = {};
 
 	SetView(new OrchardView(this));
 }
@@ -260,4 +256,9 @@ void Game::Restart()
 	_harvestLeft = _maxHarvest;
 
 	SetView(new OrchardView(this));
+}
+
+void Game::AddTree(const Tree& tree)
+{
+	_trees.emplace_back(tree);
 }

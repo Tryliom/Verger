@@ -10,6 +10,12 @@
 OrchardView::OrchardView(Game* game) : View()
 {
 	_game = game;
+
+	// Gain one tree of each type every time the game is started or the player wins
+	_game->AddTree(TreeFactory::GetTree(TreeType::CHERRY));
+	_game->AddTree(TreeFactory::GetTree(TreeType::PEAR));
+	_game->AddTree(TreeFactory::GetTree(TreeType::APPLE));
+
 	_treeData = TreeFactory::GetTreeData();
 	_averageWeightPerMonth = _game->GetAverageWeightPerMonth();
 
@@ -20,12 +26,12 @@ OrchardView::OrchardView(Game* game) : View()
 
 	setComponents({
 		new Console::BasicButton(
-			"Buy a cherry tree [25$]", PositionX(0.3f), PositionY(10),
+			"Buy a cherry tree [30$]", PositionX(0.3f), PositionY(10),
 			[this]()
 			{
-				if (_game->HasEnoughMoney(25))
+				if (_game->HasEnoughMoney(30))
 				{
-					_game->BuyTree(CherryTree(), 25);
+					_game->BuyTree(CherryTree(), 30);
 					updateAverageWeightPerMonth();
 				}
 				else
@@ -36,12 +42,12 @@ OrchardView::OrchardView(Game* game) : View()
 			true, true
 		),
 		new Console::BasicButton(
-			"Buy a pear tree [12$]", PositionX(0.3f), PositionY(15),
+			"Buy a pear tree [14$]", PositionX(0.3f), PositionY(15),
 			[this]()
 			{
-				if (_game->HasEnoughMoney(12))
+				if (_game->HasEnoughMoney(14))
 				{
-					_game->BuyTree(PearTree(), 12);
+					_game->BuyTree(PearTree(), 14);
 					updateAverageWeightPerMonth();
 				}
 				else
@@ -52,12 +58,12 @@ OrchardView::OrchardView(Game* game) : View()
 			true, true
 		),
 		new Console::BasicButton(
-			"Buy an apple tree [10$]", PositionX(0.3f), PositionY(20),
+			"Buy an apple tree [8$]", PositionX(0.3f), PositionY(20),
 			[this]()
 			{
-				if (_game->HasEnoughMoney(10))
+				if (_game->HasEnoughMoney(8))
 				{
-					_game->BuyTree(AppleTree(), 10);
+					_game->BuyTree(AppleTree(), 8);
 					updateAverageWeightPerMonth();
 				}
 				else
