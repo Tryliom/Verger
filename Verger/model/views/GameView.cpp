@@ -4,8 +4,12 @@
 GameView::GameView(Game* game)
 {
 	_game = game;
-
 	_treeInformation = _game->GetTreeInformation();
+
+	Console::Screen::SetWindowSize(1200, 700);
+	Console::Screen::CenterWindow();
+
+	Console::AudioManager::Play(MAIN_THEME_PATH, true);
 
 	setComponents({
 		new Console::BasicButton(

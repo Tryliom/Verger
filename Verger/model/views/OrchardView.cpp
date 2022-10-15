@@ -13,7 +13,10 @@ OrchardView::OrchardView(Game* game) : View()
 	_treeData = TreeFactory::GetTreeData();
 	_averageWeightPerMonth = _game->GetAverageWeightPerMonth();
 
-	Console::AudioManager::Play(MAIN_THEME_PATH, true);
+	Console::Screen::SetWindowSize(1200, 1000);
+	Console::Screen::CenterWindow();
+
+	Console::AudioManager::Play(ORCHARD_THEME_PATH, true);
 
 	setComponents({
 		new Console::BasicButton(
@@ -147,11 +150,11 @@ void OrchardView::displayAverageWeightPerMonth(Console::Screen& screen) const
 	const int xLeft = PositionX(0.1f).GetValue(true);
 	int maxValue = _game->GetGoalWeight();
 
-	for (const auto& weight : _averageWeightPerMonth | std::views::values)
+	for (const auto& fruits : _averageWeightPerMonth | std::views::values)
 	{
-		if (weight > maxValue)
+		if (fruits.GrowthWeight > maxValue)
 		{
-			maxValue = weight;
+			maxValue = fruits.GrowthWeight;
 		}
 	}
 
@@ -159,17 +162,30 @@ void OrchardView::displayAverageWeightPerMonth(Console::Screen& screen) const
 	int x = xLeft;
 	int y = yTop + maxHeight;
 
-	for (const auto& weight : _averageWeightPerMonth | std::views::values)
+	for (const auto& fruits : _averageWeightPerMonth | std::views::values)
 	{
-		if (weight > 0)
+		if (fruits.GrowthWeight > 0)
 		{
 			// Growth fruit weight
 			screen.DrawRect(
 				x + widthBar,
-				y - maxHeight * weight / maxValue,
-				widthBar,
-				maxHeight * weight / maxValue,
+				y - maxHeight * fruits.GrowthWeight / maxValue,
+				widthBar / 2,
+				maxHeight * fruits.GrowthWeight / maxValue,
 				RGB(0, 204, 102),
+				false
+			);
+		}
+
+		if (fruits.HarvestableWeight > 0)
+		{
+			// Growth fruit weight
+			screen.DrawRect(
+				x + widthBar * 3 / 2,
+				y - maxHeight * fruits.HarvestableWeight / maxValue,
+				widthBar / 2,
+				maxHeight * fruits.HarvestableWeight / maxValue,
+				RGB(255, 128, 0),
 				false
 			);
 		}
@@ -206,6 +222,21 @@ void OrchardView::displayAverageWeightPerMonth(Console::Screen& screen) const
 		3,
 		RGB(255, 0, 0)
 	);
+
+	// Draw month names
+	x = xLeft + widthPerMonth / 2;
+
+	for (const auto& month : _averageWeightPerMonth | std::views::keys)
+	{
+		screen.Draw(Console::Text{
+			.Str = MONTH_TO_STRING.at(month),
+			.X = x / Console::Screen::PIXEL_RATIO_X,
+			.Y = y / Console::Screen::PIXEL_RATIO_Y + 1,
+			.XCentered = true
+		});
+
+		x += widthPerMonth;
+	}
 }
 
 void OrchardView::updateAverageWeightPerMonth()

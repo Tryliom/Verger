@@ -172,5 +172,8 @@
     <Media Include="assets\audio\victory_theme.wav">
       <Filter>Fichiers de ressources</Filter>
     </Media>
+    <Media Include="assets\audio\orchard_theme.wav">
+      <Filter>Fichiers de ressources</Filter>
+    </Media>
   </ItemGroup>
 </Project>

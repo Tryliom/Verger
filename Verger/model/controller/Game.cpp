@@ -123,20 +123,21 @@ std::vector<std::string> Game::GetTreeInformation() const
 	return treeInformation;
 }
 
-std::unordered_map<Month, int> Game::GetAverageWeightPerMonth()
+std::unordered_map<Month, FruitsWeightData> Game::GetAverageWeightPerMonth()
 {
-	std::unordered_map<Month, int> averageWeightPerMonth;
+	std::unordered_map<Month, FruitsWeightData> averageWeightPerMonth;
 
 	for (auto& tree : _trees)
 	{
-		for (const auto& [month, weight] : tree.GetAverageWeightPerMonth())
+		for (const auto& [month, fruits] : tree.GetAverageWeightPerMonth())
 		{
 			if (!averageWeightPerMonth.contains(month))
 			{
-				averageWeightPerMonth[month] = 0;
+				averageWeightPerMonth[month] = FruitsWeightData(0, 0);
 			}
 
-			averageWeightPerMonth[month] += weight;
+			averageWeightPerMonth[month].GrowthWeight += fruits.GrowthWeight;
+			averageWeightPerMonth[month].HarvestableWeight += fruits.HarvestableWeight;
 		}
 	}
 

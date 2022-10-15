@@ -18,6 +18,12 @@ struct TreeData
 	Month EndHarvestDate;
 };
 
+struct FruitsWeightData
+{
+	int GrowthWeight;
+	int HarvestableWeight;
+};
+
 class Tree
 {
 private:
@@ -42,9 +48,9 @@ public:
 	TreeData GetData() const;
 	/**
 	 * \brief Get the average weight of the fruits per month
-	 * \return The average weight of the fruits per month
+	 * \return The average weight of the fruits per month growing and harvestable
 	 */
-	std::unordered_map<Month, int> GetAverageWeightPerMonth();
+	std::unordered_map<Month, FruitsWeightData> GetAverageWeightPerMonth();
 
 	/**
 	 * \brief Called every month

@@ -8,7 +8,7 @@ private:
 	Game* _game;
 	std::string _errorMessage;
 	std::vector<TreeData> _treeData;
-	std::unordered_map<Month, int> _averageWeightPerMonth;
+	std::unordered_map<Month, FruitsWeightData> _averageWeightPerMonth;
 
 	void displayTrees(Console::Screen& screen) const;
 	void displayTreeData(Console::Screen& screen) const;

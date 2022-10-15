@@ -183,6 +183,7 @@
   <ItemGroup>
     <Media Include="assets\audio\defeat_theme.wav" />
     <Media Include="assets\audio\main_theme.wav" />
+    <Media Include="assets\audio\orchard_theme.wav" />
     <Media Include="assets\audio\victory_theme.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

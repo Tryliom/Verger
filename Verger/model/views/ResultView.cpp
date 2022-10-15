@@ -6,7 +6,7 @@ ResultView::ResultView(Game* game)
 
 	if (_game->HasSurpassGoal())
 	{
-		Console::AudioManager::Play(VICTORY_THEME_PATH, true);
+		Console::AudioManager::Play(VICTORY_THEME_PATH, false);
 
 		addComponent(new Console::BasicButton(
 			"Return to your orchard", PositionX(0.5f), PositionY(0.5f),
@@ -18,7 +18,7 @@ ResultView::ResultView(Game* game)
 	}
 	else
 	{
-		Console::AudioManager::Play(DEFEAT_THEME_PATH, true);
+		Console::AudioManager::Play(DEFEAT_THEME_PATH, false);
 
 		addComponent(new Console::BasicButton(
 			"Restart", PositionX(0.5f), PositionY(0.5f),

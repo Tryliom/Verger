@@ -17,6 +17,7 @@ struct TreeInformation
 };
 
 const std::string MAIN_THEME_PATH = "assets/audio/main_theme.wav";
+const std::string ORCHARD_THEME_PATH = "assets/audio/orchard_theme.wav";
 const std::string VICTORY_THEME_PATH = "assets/audio/victory_theme.wav";
 const std::string DEFEAT_THEME_PATH = "assets/audio/defeat_theme.wav";
 
@@ -60,7 +61,7 @@ public:
 
 	[[nodiscard]] std::unordered_map<TreeType, int> GetTrees() const;
 	[[nodiscard]] std::vector<std::string> GetTreeInformation() const;
-	std::unordered_map<Month, int> GetAverageWeightPerMonth();
+	std::unordered_map<Month, FruitsWeightData> GetAverageWeightPerMonth();
 
 	void NextMonth();
 	void NextYear();

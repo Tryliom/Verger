@@ -33,11 +33,12 @@ TreeData Tree::GetData() const
 	);
 }
 
-std::unordered_map<Month, int> Tree::GetAverageWeightPerMonth()
+std::unordered_map<Month, FruitsWeightData> Tree::GetAverageWeightPerMonth()
 {
-	std::unordered_map<Month, int> averageWeightPerMonth;
+	std::unordered_map<Month, FruitsWeightData> averageWeightPerMonth;
 	int nbFruit = 0;
 	int nbFruitMax = 0;
+	int harvestableWeight = 0;
 
 	for (int i = 1; i <= 12; i++)
 	{
@@ -68,7 +69,12 @@ std::unordered_map<Month, int> Tree::GetAverageWeightPerMonth()
 			nbFruit = 0;
 		}
 
-		averageWeightPerMonth[month] = nbFruit * _fruitWeight;
+		if (month >= _startHarvestDate && month <= Month::DECEMBER)
+		{
+			harvestableWeight = nbFruit * _fruitWeight;
+		}
+
+		averageWeightPerMonth[month] = FruitsWeightData(nbFruit * _fruitWeight, harvestableWeight);
 	}
 
 	return averageWeightPerMonth;
