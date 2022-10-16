@@ -227,4 +227,65 @@ namespace RenderUtility
 			y++;
 		}
 	}
+
+	void DrawCompletionBar(Console::Screen& screen, const int x, const int y, const int width, const int height, CompletionData data)
+	{
+		// Draw a grey bar for the background
+		screen.DrawRect(
+			x,
+			y,
+			width,
+			height,
+			RGB(60, 60, 60)
+		);
+
+		// Draw a orange bar for the potential harvestable weight
+		screen.DrawRect(
+			x,
+			y,
+			static_cast<int>(width * data.PotentialWeight / static_cast<float>(data.MaxWeight)),
+			height,
+			RGB(255, 128, 0)
+		);
+
+		// Draw a light green bar for the current harvested weight
+		screen.DrawRect(
+			x,
+			y,
+			static_cast<int>(width * data.CurrentWeight / static_cast<float>(data.MaxWeight)),
+			height,
+			RGB(0, 153, 76)
+		);
+
+		// Draw a red circle for the goal
+		screen.DrawCircle(
+			x + static_cast<int>(width * data.GoalWeight / static_cast<float>(data.MaxWeight)) - height / 2,
+			y,
+			height / 2,
+			RGB(255, 0, 0)
+		);
+	}
+
+	void DrawLegends(Console::Screen& screen, const std::vector<Legend>& legends, int x, int y)
+	{
+		// Draw the legends
+		for (auto& legend : legends)
+		{
+			screen.Draw(Console::Text{
+				.Str = legend.Name,
+				.X = x,
+				.Y = y
+				});
+
+			screen.DrawRect(
+				x * Console::Screen::PIXEL_RATIO_X - 20,
+				y * Console::Screen::PIXEL_RATIO_Y + PositionY(1).GetValue(true) / 4,
+				10,
+				10,
+				legend.Color
+			);
+
+			y += 2;
+		}
+	}
 }

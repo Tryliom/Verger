@@ -16,6 +16,14 @@ struct TreeInformation
 	bool CanBeHarvested;
 };
 
+struct CompletionData
+{
+	int CurrentWeight;
+	int PotentialWeight;
+	int GoalWeight;
+	int MaxWeight;
+};
+
 // Music come from Atomicrops game by AtomicTorch Studio (https://atomicrops.com/)
 const std::string MAIN_THEME_PATH = "assets/audio/main_theme.wav";
 const std::string ORCHARD_THEME_PATH = "assets/audio/orchard_theme.wav";
@@ -63,6 +71,7 @@ public:
 	[[nodiscard]] std::unordered_map<TreeType, int> GetTrees() const;
 	[[nodiscard]] std::vector<std::string> GetTreeInformation() const;
 	std::unordered_map<Month, FruitsWeightData> GetAverageWeightPerMonth();
+	CompletionData GetCompletionData() const;
 
 	void NextMonth();
 	void NextYear();

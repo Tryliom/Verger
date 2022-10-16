@@ -40,21 +40,21 @@ void ResultView::Update(Console::Screen& screen)
 		screen.Draw(Console::Text{
 			.Str = "You have surpassed your goal !",
 			.X = Console::Screen::WIDTH / 2,
-			.Y = 2,
+			.Y = 6,
 			.XCentered = true
 		});
 
 		screen.Draw(Console::Text{
 			.Str = "You have harvested " + _game->GetCompletion() + " weight !",
 			.X = Console::Screen::WIDTH / 2,
-			.Y = 4,
+			.Y = 8,
 			.XCentered = true
 		});
 
 		screen.Draw(Console::Text{
 			.Str = "You have gained " + _game->GetMoneyIncome() + " and one tree of each type !",
 			.X = Console::Screen::WIDTH / 2,
-			.Y = 6,
+			.Y = 10,
 			.XCentered = true
 			});
 	}
@@ -63,7 +63,7 @@ void ResultView::Update(Console::Screen& screen)
 		screen.Draw(Console::Text{
 			.Str = "You have not surpassed your goal !",
 			.X = Console::Screen::WIDTH / 2,
-			.Y = 2,
+			.Y = 6,
 			.XCentered = true,
 			.Background = Console::Background::RED
 		});

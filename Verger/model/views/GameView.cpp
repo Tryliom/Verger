@@ -1,10 +1,12 @@
 #include "GameView.h"
 #include "ResultView.h"
+#include "../utility/RenderUtility.h"
 
 GameView::GameView(Game* game)
 {
 	_game = game;
 	_treeInformation = _game->GetTreeInformation();
+	_completionData = _game->GetCompletionData();
 
 	Console::Screen::SetWindowSize(1200, 700);
 	Console::Screen::CenterWindow();
@@ -17,7 +19,7 @@ GameView::GameView(Game* game)
 			[this]()
 			{
 				_game->Harvest();
-				_treeInformation = _game->GetTreeInformation();
+				updateData();
 			},
 			true, true
 		),
@@ -32,12 +34,22 @@ GameView::GameView(Game* game)
 				else
 				{
 					_game->NextMonth();
-					_treeInformation = _game->GetTreeInformation();
+					updateData();
 				}
 			},
 			true, true
 		)
 	});
+}
+
+void GameView::updateData()
+{
+	_game->AddToQueue([this]()
+		{
+			_treeInformation = _game->GetTreeInformation();
+			_completionData = _game->GetCompletionData();
+		}
+	);
 }
 
 void GameView::Update(Console::Screen& screen)
@@ -46,32 +58,26 @@ void GameView::Update(Console::Screen& screen)
 
 	screen.Draw(Console::Text{ 
 		.Str = "Month: " + MONTH_TO_STRING.at(_game->GetCurrentMonth()),
-		.X = 2,
-		.Y = 2
-	});
-
-	screen.Draw(Console::Text{
-		.Str = "Harvested weight: " + _game->GetCompletion(),
-		.X = 2,
-		.Y = 4,
-		.Background = _game->HasSurpassGoal() ? Console::Background::GREEN : Console::Background::RED,
-		.Foreground = Console::Foreground::WHITE,
+		.X = PositionX(0.5f).GetValue(),
+		.Y = 5,
+		.XCentered = true
 	});
 
 	screen.Draw(Console::Text{
 		.Str = "Harvest left: " + std::to_string(_game->GetHarvestLeft()),
-		.X = 2,
-		.Y = 6
+		.X = PositionX(0.5f).GetValue(),
+		.Y = 7,
+		.XCentered = true
 	});
 
-	for (int i = 0; i < static_cast<int>(_treeInformation.size()); i++)
-	{
-		screen.Draw(Console::Text{
-			.Str = _treeInformation[i],
-			.X = 2,
-			.Y = 8 + i * 2
-		});
-	}
+	RenderUtility::DrawCompletionBar(screen, PositionX(0.1f).GetValue(true), PositionY(2).GetValue(true),
+		PositionX(0.8f).GetValue(true), 20, _completionData);
+	RenderUtility::DrawLegends(screen, {
+			Legend("Goal", RGB(255, 0, 0)),
+			Legend("Harvestable", RGB(255, 128, 0)),
+			Legend("Harvested", RGB(0, 153, 76))
+		}, PositionX(4).GetValue(), 5
+	);
 }
 
 void GameView::OnKeyPressed(const char key)

@@ -140,6 +140,42 @@ std::unordered_map<Month, FruitsWeightData> Game::GetAverageWeightPerMonth()
 	return averageWeightPerMonth;
 }
 
+CompletionData Game::GetCompletionData() const
+{
+	int potentialWeight = 0;
+	for (const auto& tree : _trees)
+	{
+		if (tree.CanBeHarvested(_currentMonth))
+		{
+			potentialWeight += tree.GetCurrentWeight();
+		}
+	}
+
+	auto data = CompletionData(
+		_totalWeight,
+		potentialWeight,
+		_goalWeight,
+		0
+	);
+
+	if (data.CurrentWeight > data.MaxWeight)
+	{
+		data.MaxWeight = data.CurrentWeight;
+	}
+
+	if (data.GoalWeight > data.MaxWeight)
+	{
+		data.MaxWeight = data.GoalWeight;
+	}
+
+	if (data.PotentialWeight > data.MaxWeight)
+	{
+		data.MaxWeight = data.PotentialWeight;
+	}
+
+	return data;
+}
+
 void Game::NextMonth()
 {
 	if (_currentMonth != Month::DECEMBER)

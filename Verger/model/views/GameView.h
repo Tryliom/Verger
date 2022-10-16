@@ -7,7 +7,10 @@ class GameView : public Console::View
 private:
 	Game* _game;
 
+	CompletionData _completionData;
 	std::vector<std::string> _treeInformation;
+
+	void updateData();
 public:
 	explicit GameView(Game* game);
 
